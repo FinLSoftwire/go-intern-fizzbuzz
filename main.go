@@ -19,6 +19,9 @@ func FizzBuzz(minimumBound int, maximumBound int) (fbOutput string) {
 		if currentNumber%5 == 0 {
 			applicableWordsSlice = append(applicableWordsSlice, "Buzz")
 		}
+		if currentNumber%7 == 0 {
+			applicableWordsSlice = append(applicableWordsSlice, "Bang")
+		}
 		if len(applicableWordsSlice) == 0 {
 			fbOutput += strconv.Itoa(currentNumber) + "\n"
 		} else {

@@ -24,3 +24,24 @@ func TestFizzAndBuzz(t *testing.T) {
 		t.Errorf("Expected FizzBuzz, instead found: %s", result)
 	}
 }
+
+func TestBang(t *testing.T) {
+	result := FizzBuzz(7, 7)
+	if result != "Bang\n" {
+		t.Errorf("Expected Bang, instead found: %s", result)
+	}
+}
+
+func TestFizzAndBang(t *testing.T) {
+	result := FizzBuzz(21, 21)
+	if result != "FizzBang\n" {
+		t.Errorf("Expected FizzBang, instead found: %s", result)
+	}
+}
+
+func TestFizzBuzzBang(t *testing.T) {
+	result := FizzBuzz(105, 105)
+	if result != "FizzBuzzBang\n" {
+		t.Errorf("Expected FizzBuzzBang, instead found: %s", result)
+	}
+}
