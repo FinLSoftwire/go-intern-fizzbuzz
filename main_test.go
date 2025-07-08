@@ -4,10 +4,11 @@ import (
 	"testing"
 )
 
-var defaultRuleSet RuleSet
+var defaultRuleSet, onlyFizzRuleSet RuleSet
 
 func TestFizz(t *testing.T) {
 	defaultRuleSet = initialiseDefaultRuleSet()
+	onlyFizzRuleSet = initialiseSpecialisedRuleSet([]int{3})
 	result := defaultRuleSet.FizzBuzz(3, 3)
 	if result != "Fizz\n" {
 		t.Errorf("Expected Fizz, instead found: %s", result)
@@ -95,5 +96,16 @@ func TestFizzBuzzReverse(t *testing.T) {
 	result := defaultRuleSet.FizzBuzz(255, 255)
 	if result != "BuzzFizz\n" {
 		t.Errorf("Expected BuzzFizz, instead found: %s", result)
+	}
+}
+
+func TestLimitedRuleSet(t *testing.T) {
+	result := onlyFizzRuleSet.FizzBuzz(3, 3)
+	if result != "Fizz\n" {
+		t.Errorf("Expected Fizz, instead found: %s", result)
+	}
+	result2 := onlyFizzRuleSet.FizzBuzz(5, 5)
+	if result2 != "5\n" {
+		t.Errorf("Expected 5, instead found: %s", result)
 	}
 }
