@@ -17,14 +17,21 @@ type RuleSet struct {
 type stringSlice []string
 
 func main() {
-	fmt.Println("Enter an upper bound for FizzBuzz: ")
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	upperBoundInput := handleASCIIToIntConversion(scanner.Text())
+	upperBoundInput := getFizzBuzzUpperBoundInput()
 	var ruleSetInUse RuleSet
 	integerArguments := getIntsFromArguments(os.Args)
 	ruleSetInUse = initialiseSpecialisedRuleSet(integerArguments)
 	fmt.Println(ruleSetInUse.FizzBuzz(1, upperBoundInput))
+}
+
+func getFizzBuzzUpperBoundInput() int {
+	fmt.Println("Enter an upper bound for FizzBuzz: ")
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	if len(scanner.Text()) == 0 {
+		return 100
+	}
+	return handleASCIIToIntConversion(scanner.Text())
 }
 
 func handleASCIIToIntConversion(asciiInput string) (integerEquivalence int) {
