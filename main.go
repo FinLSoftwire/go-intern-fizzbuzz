@@ -9,6 +9,12 @@ import (
 	"strings"
 )
 
+type RuleSet struct {
+	integerSliceOperationMapping map[int]func(newWord string)
+}
+
+type stringSlice []string
+
 func main() {
 	fmt.Println("Enter an upper bound for FizzBuzz: ")
 	scanner := bufio.NewScanner(os.Stdin)
@@ -20,22 +26,22 @@ func main() {
 	fmt.Println(FizzBuzz(1, upperBoundInput))
 }
 
-func insertBeforeFirstB(wordsSlice []string, newWord string) (newWordsSlice []string) {
-	for wordIndex, currentWord := range wordsSlice {
+func (currentWordsSlice *stringSlice) insertBeforeFirstB(newWord string) {
+	newWordsSlice := make([]string, 0)
+	for wordIndex, currentWord := range *currentWordsSlice {
 		if currentWord[0] == 'B' {
-			newWordsSlice = append(append(newWordsSlice, newWord), wordsSlice[wordIndex:]...)
+			*currentWordsSlice = append(append(newWordsSlice, newWord), (*currentWordsSlice)[wordIndex:]...)
 			return
 		} else {
 			newWordsSlice = append(newWordsSlice, currentWord)
 		}
 	}
-	newWordsSlice = append(newWordsSlice, newWord)
-	return
+	*currentWordsSlice = append(newWordsSlice, newWord)
 }
 
 func FizzBuzz(minimumBound int, maximumBound int) (fbOutput string) {
 	for currentNumber := minimumBound; currentNumber <= maximumBound; currentNumber++ {
-		applicableWordsSlice := make([]string, 0)
+		applicableWordsSlice := stringSlice(make([]string, 0))
 		if currentNumber%3 == 0 {
 			applicableWordsSlice = append(applicableWordsSlice, "Fizz")
 		}
@@ -49,7 +55,7 @@ func FizzBuzz(minimumBound int, maximumBound int) (fbOutput string) {
 			applicableWordsSlice = []string{"Bong"}
 		}
 		if currentNumber%13 == 0 {
-			applicableWordsSlice = insertBeforeFirstB(applicableWordsSlice, "Fezz")
+			applicableWordsSlice.insertBeforeFirstB("Fezz")
 		}
 		if currentNumber%17 == 0 {
 			slices.Reverse(applicableWordsSlice)
