@@ -43,6 +43,10 @@ func (currentWordsSlice *stringSlice) appendInPlace(newWord string) {
 	*currentWordsSlice = append(*currentWordsSlice, newWord)
 }
 
+func (currentWordsSlice *stringSlice) setToSingleElement(word string) {
+	*currentWordsSlice = stringSlice{word}
+}
+
 func FizzBuzz(minimumBound int, maximumBound int) (fbOutput string) {
 	for currentNumber := minimumBound; currentNumber <= maximumBound; currentNumber++ {
 		applicableWordsSlice := stringSlice(make([]string, 0))
@@ -56,7 +60,7 @@ func FizzBuzz(minimumBound int, maximumBound int) (fbOutput string) {
 			applicableWordsSlice.appendInPlace("Bang")
 		}
 		if currentNumber%11 == 0 {
-			applicableWordsSlice = []string{"Bong"}
+			applicableWordsSlice.setToSingleElement("Bong")
 		}
 		if currentNumber%13 == 0 {
 			applicableWordsSlice.insertBeforeFirstB("Fezz")
