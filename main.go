@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -40,6 +41,9 @@ func FizzBuzz(minimumBound int, maximumBound int) (fbOutput string) {
 		}
 		if currentNumber%13 == 0 {
 			applicableWordsSlice = insertBeforeFirstB(applicableWordsSlice, "Fezz")
+		}
+		if currentNumber%17 == 0 {
+			slices.Reverse(applicableWordsSlice)
 		}
 		if len(applicableWordsSlice) == 0 {
 			fbOutput += strconv.Itoa(currentNumber) + "\n"

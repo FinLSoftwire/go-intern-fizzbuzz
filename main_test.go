@@ -87,3 +87,10 @@ func TestFizzFezzBuzz(t *testing.T) {
 		t.Errorf("Expected FizzFezzBuzz, instead found: %s", result)
 	}
 }
+
+func TestFizzBuzzReverse(t *testing.T) {
+	result := FizzBuzz(255, 255)
+	if result != "BuzzFizz\n" {
+		t.Errorf("Expected BuzzFizz, instead found: %s", result)
+	}
+}
