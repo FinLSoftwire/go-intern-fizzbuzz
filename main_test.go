@@ -59,3 +59,31 @@ func TestBongOnly(t *testing.T) {
 		t.Errorf("Expected Bong, instead found: %s", result)
 	}
 }
+
+func TestFezz(t *testing.T) {
+	result := FizzBuzz(13, 13)
+	if result != "Fezz\n" {
+		t.Errorf("Expected Fezz, instead found: %s", result)
+	}
+}
+
+func TestFezzBong(t *testing.T) {
+	result := FizzBuzz(143, 143)
+	if result != "FezzBong\n" {
+		t.Errorf("Expected FezzBong, instead found: %s", result)
+	}
+}
+
+func TestFezzBuzz(t *testing.T) {
+	result := FizzBuzz(65, 65)
+	if result != "FezzBuzz\n" {
+		t.Errorf("Expected FezzBuzz, instead found: %s", result)
+	}
+}
+
+func TestFizzFezzBuzz(t *testing.T) {
+	result := FizzBuzz(195, 195)
+	if result != "FizzFezzBuzz\n" {
+		t.Errorf("Expected FizzFezzBuzz, instead found: %s", result)
+	}
+}
