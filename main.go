@@ -1,14 +1,23 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"slices"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	fmt.Println(FizzBuzz(1, 20))
+	fmt.Println("Enter an upper bound for FizzBuzz: ")
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	upperBoundInput, err := strconv.Atoi(scanner.Text())
+	if err == nil {
+		fmt.Errorf("Expected an integer, instead got %s", scanner.Text())
+	}
+	fmt.Println(FizzBuzz(1, upperBoundInput))
 }
 
 func insertBeforeFirstB(wordsSlice []string, newWord string) (newWordsSlice []string) {
