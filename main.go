@@ -11,7 +11,7 @@ import (
 
 type RuleSet struct {
 	integerSliceOperationMapping map[int]func(currentWordsSlice *stringSlice)
-	orderedRuleModulos           []int
+	orderedModuloList            []int
 }
 
 type stringSlice []string
@@ -20,12 +20,34 @@ func main() {
 	fmt.Println("Enter an upper bound for FizzBuzz: ")
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
-	upperBoundInput, err := strconv.Atoi(scanner.Text())
+	upperBoundInput := handleASCIIToIntConversion(scanner.Text())
+	var ruleSetInUse RuleSet
+	integerArguments := getIntsFromArguments(os.Args)
+	ruleSetInUse = initialiseSpecialisedRuleSet(integerArguments)
+	fmt.Println(ruleSetInUse.FizzBuzz(1, upperBoundInput))
+}
+
+func handleASCIIToIntConversion(asciiInput string) (integerEquivalence int) {
+	integerEquivalence, err := strconv.Atoi(asciiInput)
 	if err == nil {
-		fmt.Errorf("Expected an integer, instead got %s", scanner.Text())
+		fmt.Errorf("Expected an integer, instead got %s", asciiInput)
 	}
-	defaultRuleSet := initialiseDefaultRuleSet()
-	fmt.Println(defaultRuleSet.FizzBuzz(1, upperBoundInput))
+	return
+}
+
+func getIntsFromArguments(arguments []string) (returnIntegers []int) {
+	if len(arguments) < 2 {
+		returnIntegers = []int{3, 5, 7, 11, 13, 17}
+		return
+	}
+	returnIntegers = make([]int, 0)
+	for argumentIndex, currentArgumentString := range arguments {
+		if argumentIndex < 1 {
+			continue
+		}
+		returnIntegers = append(returnIntegers, handleASCIIToIntConversion(currentArgumentString))
+	}
+	return
 }
 
 func (currentWordsSlice *stringSlice) insertBeforeFirstB(newWord string) {
@@ -58,14 +80,30 @@ func initialiseDefaultRuleSet() RuleSet {
 	defaultRuleSet.integerSliceOperationMapping[11] = func(currentWordsSlice *stringSlice) { currentWordsSlice.setToSingleElement("Bong") }
 	defaultRuleSet.integerSliceOperationMapping[13] = func(currentWordsSlice *stringSlice) { currentWordsSlice.insertBeforeFirstB("Fezz") }
 	defaultRuleSet.integerSliceOperationMapping[17] = func(currentWordsSlice *stringSlice) { slices.Reverse(*currentWordsSlice) }
-	defaultRuleSet.orderedRuleModulos = []int{3, 5, 7, 11, 13, 17}
+	defaultRuleSet.orderedModuloList = []int{3, 5, 7, 11, 13, 17}
 	return defaultRuleSet
+}
+
+func initialiseSpecialisedRuleSet(desiredBuiltinRules []int) RuleSet {
+	currentRuleSet := RuleSet{}
+	currentRuleSet.integerSliceOperationMapping = make(map[int]func(currentWordsSlice *stringSlice))
+	currentRuleSet.orderedModuloList = make([]int, 0)
+	defaultRuleSet := initialiseDefaultRuleSet()
+	// Rules should be applied in the order in ascending integer order
+	slices.Sort(desiredBuiltinRules)
+	for _, desiredRuleInteger := range desiredBuiltinRules {
+		if slices.Contains(defaultRuleSet.orderedModuloList, desiredRuleInteger) {
+			currentRuleSet.integerSliceOperationMapping[desiredRuleInteger] = defaultRuleSet.integerSliceOperationMapping[desiredRuleInteger]
+			currentRuleSet.orderedModuloList = append(currentRuleSet.orderedModuloList, desiredRuleInteger)
+		}
+	}
+	return currentRuleSet
 }
 
 func (currentRuleSet *RuleSet) FizzBuzz(minimumBound int, maximumBound int) (fbOutput string) {
 	for currentNumber := minimumBound; currentNumber <= maximumBound; currentNumber++ {
 		applicableWordsSlice := stringSlice(make([]string, 0))
-		for _, ruleInteger := range currentRuleSet.orderedRuleModulos {
+		for _, ruleInteger := range currentRuleSet.orderedModuloList {
 			if currentNumber%ruleInteger == 0 {
 				currentRuleSet.integerSliceOperationMapping[ruleInteger](&applicableWordsSlice)
 			}
