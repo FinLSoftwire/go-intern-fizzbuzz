@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	utils "fizzbuzz/utils"
+	. "fizzbuzz/utils"
 	"fmt"
 	"os"
 	"slices"
@@ -11,7 +11,7 @@ import (
 )
 
 type RuleSet struct {
-	integerSliceOperationMapping map[int]func(currentWordsSlice *utils.StringSlice)
+	integerSliceOperationMapping map[int]func(currentWordsSlice *StringSlice)
 	orderedModuloList            []int
 }
 
@@ -58,20 +58,20 @@ func getIntsFromArguments(arguments []string) (returnIntegers []int) {
 
 func initialiseDefaultRuleSet() RuleSet {
 	defaultRuleSet := RuleSet{}
-	defaultRuleSet.integerSliceOperationMapping = make(map[int]func(currentWordsSlice *utils.StringSlice))
-	defaultRuleSet.integerSliceOperationMapping[3] = func(currentWordsSlice *utils.StringSlice) { currentWordsSlice.AppendInPlace("Fizz") }
-	defaultRuleSet.integerSliceOperationMapping[5] = func(currentWordsSlice *utils.StringSlice) { currentWordsSlice.AppendInPlace("Buzz") }
-	defaultRuleSet.integerSliceOperationMapping[7] = func(currentWordsSlice *utils.StringSlice) { currentWordsSlice.AppendInPlace("Bang") }
-	defaultRuleSet.integerSliceOperationMapping[11] = func(currentWordsSlice *utils.StringSlice) { currentWordsSlice.SetToSingleElement("Bong") }
-	defaultRuleSet.integerSliceOperationMapping[13] = func(currentWordsSlice *utils.StringSlice) { currentWordsSlice.InsertBeforeFirstB("Fezz") }
-	defaultRuleSet.integerSliceOperationMapping[17] = func(currentWordsSlice *utils.StringSlice) { slices.Reverse(*currentWordsSlice) }
+	defaultRuleSet.integerSliceOperationMapping = make(map[int]func(currentWordsSlice *StringSlice))
+	defaultRuleSet.integerSliceOperationMapping[3] = func(currentWordsSlice *StringSlice) { currentWordsSlice.AppendInPlace("Fizz") }
+	defaultRuleSet.integerSliceOperationMapping[5] = func(currentWordsSlice *StringSlice) { currentWordsSlice.AppendInPlace("Buzz") }
+	defaultRuleSet.integerSliceOperationMapping[7] = func(currentWordsSlice *StringSlice) { currentWordsSlice.AppendInPlace("Bang") }
+	defaultRuleSet.integerSliceOperationMapping[11] = func(currentWordsSlice *StringSlice) { currentWordsSlice.SetToSingleElement("Bong") }
+	defaultRuleSet.integerSliceOperationMapping[13] = func(currentWordsSlice *StringSlice) { currentWordsSlice.InsertBeforeFirstB("Fezz") }
+	defaultRuleSet.integerSliceOperationMapping[17] = func(currentWordsSlice *StringSlice) { slices.Reverse(*currentWordsSlice) }
 	defaultRuleSet.orderedModuloList = []int{3, 5, 7, 11, 13, 17}
 	return defaultRuleSet
 }
 
 func initialiseSpecialisedRuleSet(desiredBuiltinRules []int) RuleSet {
 	currentRuleSet := RuleSet{}
-	currentRuleSet.integerSliceOperationMapping = make(map[int]func(currentWordsSlice *utils.StringSlice))
+	currentRuleSet.integerSliceOperationMapping = make(map[int]func(currentWordsSlice *StringSlice))
 	currentRuleSet.orderedModuloList = make([]int, 0)
 	defaultRuleSet := initialiseDefaultRuleSet()
 	// Rules should be applied in the order in ascending integer order
@@ -87,7 +87,7 @@ func initialiseSpecialisedRuleSet(desiredBuiltinRules []int) RuleSet {
 
 func (currentRuleSet *RuleSet) FizzBuzz(minimumBound int, maximumBound int) (fbOutput string) {
 	for currentNumber := minimumBound; currentNumber <= maximumBound; currentNumber++ {
-		applicableWordsSlice := utils.StringSlice(make([]string, 0))
+		applicableWordsSlice := StringSlice(make([]string, 0))
 		for _, ruleInteger := range currentRuleSet.orderedModuloList {
 			if currentNumber%ruleInteger == 0 {
 				currentRuleSet.integerSliceOperationMapping[ruleInteger](&applicableWordsSlice)
